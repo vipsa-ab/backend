@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.0](https://github.com/vipsa-ab/backend/compare/v0.0.0...v0.1.0) (2026-04-27)
+
+
+### Features
+
+* **docker:** add scratch runtime for minimal image size ([adfe6ef](https://github.com/vipsa-ab/backend/commit/adfe6ef449f8708776f11abcde40e6e4c8e4957a)), closes [#1](https://github.com/vipsa-ab/backend/issues/1)
+* **docker:** scratch runtime para imagen minimal (~24MB) ([21e0b73](https://github.com/vipsa-ab/backend/commit/21e0b73af2ecbf3da8209e21ebf92dff0c19a4b9))
+
 ## [0.1.1](https://github.com/vipsa-ab/backend/compare/v0.1.0...v0.1.1) (2026-04-27)
 
 
