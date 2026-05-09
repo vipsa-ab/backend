@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.3.0](https://github.com/vipsa-ab/backend/compare/v0.2.1...v0.3.0) (2026-05-09)
+
+
+### Features
+
+* add configurable CORS support ([1e85218](https://github.com/vipsa-ab/backend/commit/1e852181d4503d7e18cead0a8b55271d58850df1))
+* add configurable CORS support ([12cfce5](https://github.com/vipsa-ab/backend/commit/12cfce533d9d16a1eaf36b5f94df945a47c646f3))
+
+
+### Bug Fixes
+
+* use release-type rust for proper Cargo.toml versioning ([e5142aa](https://github.com/vipsa-ab/backend/commit/e5142aa280eb64d7d8b4a05a4d5f902b77449210))
+
 ## [0.2.1](https://github.com/vipsa-ab/backend/compare/v0.2.0...v0.2.1) (2026-05-09)
 
 
