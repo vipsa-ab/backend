@@ -1,32 +1,48 @@
-use serde::Deserialize;
+use std::str::FromStr;
 
 /// Application configuration loaded from environment variables.
 ///
 /// In production: vars come from the system (Docker, Kubernetes, etc.)
 /// In development: vars come from .env via dotenvy, or are set manually.
-///
-/// Environment variables use VIPSA__ prefix with __ as separator:
-/// - VIPSA__EMAIL__RESEND_API_KEY
-/// - VIPSA__EMAIL__FROM_EMAIL
-/// - VIPSA__APP__HOST
-/// - VIPSA__APP__PORT
 
-#[derive(Debug, Deserialize, Clone)]
+#[derive(Debug, Clone)]
 pub struct AppConfig {
     pub email: EmailConfig,
     pub app: ServerConfig,
+    pub cors: CorsConfig,
 }
 
-#[derive(Debug, Deserialize, Clone)]
+#[derive(Debug, Clone)]
 pub struct EmailConfig {
     pub resend_api_key: String,
     pub from_email: String,
 }
 
-#[derive(Debug, Deserialize, Clone)]
+#[derive(Debug, Clone)]
 pub struct ServerConfig {
     pub host: String,
     pub port: u16,
+}
+
+#[derive(Debug, Clone)]
+pub struct CorsConfig {
+    pub allowed_origins: Vec<String>,
+}
+
+impl FromStr for CorsConfig {
+    type Err = std::convert::Infallible;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let allowed_origins = if s.is_empty() {
+            vec![] // No origins allowed by default
+        } else {
+            s.split(',')
+                .map(|origin| origin.trim().to_string())
+                .filter(|origin| !origin.is_empty())
+                .collect()
+        };
+        Ok(CorsConfig { allowed_origins })
+    }
 }
 
 impl AppConfig {
@@ -44,6 +60,12 @@ impl AppConfig {
                     .parse()
                     .unwrap_or(8080),
             },
+            cors: std::env::var("VIPSA__CORS__ALLOWED_ORIGINS")
+                .unwrap_or_default()
+                .parse()
+                .unwrap_or_else(|_| CorsConfig {
+                    allowed_origins: vec![],
+                }),
         }
     }
 
