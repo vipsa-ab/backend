@@ -46,14 +46,11 @@ async fn create_contact(
     </div>
 </body>
 </html>"#,
-        payload.name,
-        payload.email, payload.email,
-        payload.phone,
-        payload.service,
-        payload.message,
+        payload.name, payload.email, payload.email, payload.phone, payload.service, payload.message,
     );
 
-    state.email_port
+    state
+        .email_port
         .send_email("info@vipsa.se", &subject, &body)
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;

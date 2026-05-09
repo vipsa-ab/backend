@@ -108,7 +108,8 @@ async fn create_booking(
 </body>
 </html>"#,
         payload.name,
-        payload.email, payload.email,
+        payload.email,
+        payload.email,
         payload.phone,
         payload.customer_type,
         payload.personal_number,
@@ -122,13 +123,22 @@ async fn create_booking(
         payload.date,
         payload.time_slot,
         payload.address,
-        if payload.addons.ironing.enabled { "Ja" } else { "Nej" },
+        if payload.addons.ironing.enabled {
+            "Ja"
+        } else {
+            "Nej"
+        },
         payload.addons.ironing.hours,
-        if payload.addons.windows.enabled { "Ja" } else { "Nej" },
+        if payload.addons.windows.enabled {
+            "Ja"
+        } else {
+            "Nej"
+        },
         payload.addons.windows.hours,
     );
 
-    state.email_port
+    state
+        .email_port
         .send_email("info@vipsa.se", &subject, &body)
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;

@@ -19,6 +19,7 @@ resend-rs = "0.25"
 
 # Config
 config = "0.14"
+dotenvy = "0.15"
 
 # Logging
 tracing = "0.1"

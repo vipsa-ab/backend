@@ -25,6 +25,9 @@ use infrastructure::config::AppConfig;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    // Load .env file if present
+    dotenvy::dotenv().ok();
+
     // Initialize tracing
     registry()
         .with(EnvFilter::new(
