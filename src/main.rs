@@ -36,14 +36,14 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .with(fmt::layer())
         .init();
 
-    // Load configuration
-    let config = AppConfig::load().unwrap_or_else(|_| {
-        tracing::warn!("Could not load config file, using defaults");
-        AppConfig {
-            email: infrastructure::config::EmailConfig::default(),
-            app: infrastructure::config::ServerConfig::default(),
-        }
-    });
+    // Load configuration from environment variables
+    let config = AppConfig::load();
+
+    // Log config loaded
+    tracing::info!(
+        "Config loaded: email configured={}",
+        config.has_email_config()
+    );
 
     // Create email adapter
     let email_adapter: Arc<dyn domain::services::EmailPort> = Arc::new(ResendEmailAdapter::new(
