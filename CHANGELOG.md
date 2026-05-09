@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/vipsa-ab/backend/compare/v0.1.0...v0.2.0) (2026-05-09)
+
+
+### Features
+
+* add dotenvy support for .env configuration ([c3d39b2](https://github.com/vipsa-ab/backend/commit/c3d39b26e76385ee92e5bd96e90192edcc8dbc4c)), closes [#4](https://github.com/vipsa-ab/backend/issues/4)
+
 ## [0.1.0](https://github.com/vipsa-ab/backend/compare/v0.0.0...v0.1.0) (2026-04-27)
 
 
