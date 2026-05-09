@@ -3,15 +3,8 @@ use serde::Deserialize;
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct AppConfig {
-    pub database: DatabaseConfig,
     pub email: EmailConfig,
     pub app: ServerConfig,
-}
-
-#[derive(Debug, Deserialize, Clone)]
-pub struct DatabaseConfig {
-    pub url: String,
-    pub max_connections: u32,
 }
 
 #[derive(Debug, Deserialize, Clone)]
@@ -42,20 +35,11 @@ impl AppConfig {
     }
 }
 
-impl Default for DatabaseConfig {
-    fn default() -> Self {
-        Self {
-            url: "postgres://localhost:5432/vipsa".to_string(),
-            max_connections: 5,
-        }
-    }
-}
-
 impl Default for EmailConfig {
     fn default() -> Self {
         Self {
             resend_api_key: String::new(),
-            from_email: "noreply@vipsa.com".to_string(),
+            from_email: "no-reply@vipsa.com".to_string(),
         }
     }
 }
