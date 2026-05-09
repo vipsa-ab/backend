@@ -1,5 +1,3 @@
-pub mod notification;
-pub mod user;
+pub mod email_port;
 
-pub use notification::NotificationService;
-pub use user::UserService;
+pub use email_port::EmailPort;

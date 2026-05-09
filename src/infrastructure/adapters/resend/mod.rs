@@ -1,4 +1,4 @@
-use crate::domain::services::notification::{EmailError, EmailPort};
+use crate::domain::services::email_port::{EmailError, EmailPort};
 use resend_rs::types::CreateEmailBaseOptions;
 use resend_rs::Resend;
 use std::future::Future;
@@ -33,13 +33,13 @@ impl EmailPort for ResendEmailAdapter {
 
         Box::pin(async move {
             let email = CreateEmailBaseOptions::new(from, vec![to_string], subject_string)
-                .with_text(&body_string);
+                .with_html(&body_string);
 
             client
                 .emails
                 .send(email)
                 .await
-                .map_err(|e| EmailError::Unknown(format!("Resend error: {}", e)))?;
+                .map_err(|e| EmailError(format!("Resend error: {}", e)))?;
             Ok(())
         })
     }

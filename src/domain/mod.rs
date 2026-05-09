@@ -1,6 +1,4 @@
-//! Domain layer - contains business logic, entities, and ports
-//! This layer has NO dependencies on external frameworks or services
+//! Domain layer - business logic and ports
+//! This layer has NO dependencies on external frameworks
 
-pub mod entities;
-pub mod repositories;
 pub mod services;
