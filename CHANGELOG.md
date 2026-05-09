@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.1](https://github.com/vipsa-ab/backend/compare/v0.2.0...v0.2.1) (2026-05-09)
+
+
+### Bug Fixes
+
+* use std::env::var instead of config crate ([0ea745d](https://github.com/vipsa-ab/backend/commit/0ea745d88cd06d5b06f17c9a3f7d762962343116))
+* use std::env::var instead of config crate ([9a3bfde](https://github.com/vipsa-ab/backend/commit/9a3bfde40397b4cece61b90de2e25fa2e5538396)), closes [#4](https://github.com/vipsa-ab/backend/issues/4)
+
 ## [0.2.0](https://github.com/vipsa-ab/backend/compare/v0.1.0...v0.2.0) (2026-05-09)
 
 
