@@ -12,6 +12,7 @@ mod infrastructure;
 use axum::Router;
 use std::sync::Arc;
 use tokio::net::TcpListener;
+use tower_http::cors::{Any, CorsLayer};
 use tower_http::trace::TraceLayer;
 use tracing_subscriber::prelude::*;
 use tracing_subscriber::util::SubscriberInitExt;
@@ -41,9 +42,29 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Log config loaded
     tracing::info!(
-        "Config loaded: email configured={}",
-        config.has_email_config()
+        "Config loaded: email configured={}, cors origins={}",
+        config.has_email_config(),
+        config.cors.allowed_origins.len()
     );
+
+    // Build CORS layer
+    let cors = if config.cors.allowed_origins.is_empty() {
+        // No origins configured - deny all cross-origin requests
+        tracing::warn!("No CORS origins configured, blocking all cross-origin requests");
+        CorsLayer::new()
+    } else {
+        tracing::info!("CORS allowed origins: {:?}", config.cors.allowed_origins);
+        let origins: Vec<axum::http::HeaderValue> = config
+            .cors
+            .allowed_origins
+            .iter()
+            .filter_map(|origin| origin.parse().ok())
+            .collect();
+        CorsLayer::new()
+            .allow_origin(origins)
+            .allow_methods(Any)
+            .allow_headers(Any)
+    };
 
     // Create email adapter
     let email_adapter: Arc<dyn domain::services::EmailPort> = Arc::new(ResendEmailAdapter::new(
@@ -61,6 +82,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .route("/health", axum::routing::get(health_handler))
         .merge(booking_routes(app_state.clone()))
         .merge(contact_routes(app_state.clone()))
+        .layer(cors)
         .layer(TraceLayer::new_for_http());
 
     // Start server
