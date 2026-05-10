@@ -13,20 +13,24 @@ RUN apk add --no-cache \
 
 WORKDIR /app
 
-# Force full static compilation ONLY for the target, not for host proc-macros
-ENV CARGO_TARGET_X86_64_UNKNOWN_LINUX_MUSL_RUSTFLAGS="-C target-feature=+crt-static"
 ENV OPENSSL_STATIC=1
 
 # Cache dependencies first
 COPY Cargo.toml Cargo.lock ./
-RUN mkdir -p src && echo "fn main() {}" > src/main.rs && \
+RUN TARGET=$(rustc -vV | sed -n 's|host: ||p') && \
+    mkdir -p .cargo && \
+    echo "[target.$TARGET]" > .cargo/config.toml && \
+    echo 'rustflags = ["-C", "target-feature=+crt-static"]' >> .cargo/config.toml && \
+    mkdir -p src && echo "fn main() {}" > src/main.rs && \
     cargo fetch && \
-    cargo build --release --target x86_64-unknown-linux-musl
+    cargo build --release --target $TARGET
 RUN rm -rf src
 
 # Build the real application
 COPY src ./src
-RUN cargo build --release --target x86_64-unknown-linux-musl
+RUN TARGET=$(rustc -vV | sed -n 's|host: ||p') && \
+    cargo build --release --target $TARGET && \
+    cp /app/target/$TARGET/release/vipsa_backend /app/vipsa_backend_static
 
 # =============================================================================
 # STAGE 2: Runtime - scratch (empty image, only the binary and certificates)
@@ -37,7 +41,7 @@ FROM scratch AS runtime
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
 # Copy the compiled static binary
-COPY --from=builder /app/target/x86_64-unknown-linux-musl/release/vipsa_backend /app/vipsa_backend
+COPY --from=builder /app/vipsa_backend_static /app/vipsa_backend
 
 EXPOSE 8080
 
