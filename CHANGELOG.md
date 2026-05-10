@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.1](https://github.com/vipsa-ab/backend/compare/v0.3.0...v0.3.1) (2026-05-10)
+
+
+### Bug Fixes
+
+* update Dockerfile for dynamic target detection and static binary copying ([7169b70](https://github.com/vipsa-ab/backend/commit/7169b70760ea48e8827635ab3c5684ed54c4ef2a))
+* update Dockerfile for dynamic target detection and static binary… ([e6c6918](https://github.com/vipsa-ab/backend/commit/e6c6918f0e97dd6aff8aa1d23bdf3fe82dae52e3))
+
 ## [0.3.0](https://github.com/vipsa-ab/backend/compare/v0.2.1...v0.3.0) (2026-05-09)
 
 
